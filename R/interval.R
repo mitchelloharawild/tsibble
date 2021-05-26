@@ -279,7 +279,8 @@ gcd_interval <- function(x) {
   if (length(x) < 2) { # only one time index
     0
   } else {
-    unique_x <- vec_unique(round(abs(diff(x)), digits = 12))
+    unique_x <- sort(vec_unique(abs(diff(x))))
+    unique_x <- unique_x[c(TRUE, diff(unique_x) > .Machine$double.eps)]
     gcd_vector(unique_x)
   }
 }
