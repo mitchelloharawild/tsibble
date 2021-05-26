@@ -297,6 +297,18 @@ test_that("Difftime with 5 millisecond interval", {
   expect_identical(fill_gaps(tsbl[-2, ], value = tsbl$value[2]), tsbl)
 })
 
+
+test_that("Difftime with 1/60 second interval (#259)", {
+  idx_time <- hms(seconds = rep(seq(0, 5/60, by = 1/60), 2))
+  dat_x <- tibble(time = idx_time, grp = rep(c("a", "b"), each = 6),
+                  value = rnorm(6*2))
+  expect_message(tsbl <- as_tsibble(dat_x, key = grp))
+  expect_identical(format(interval(tsbl)), "16ms 666µs")
+  # This fails due to imprecise interval class.
+  # The lowest time unit must allow fractional values for this to work.
+  # expect_identical(fill_gaps(tsbl[-2, ], value = tsbl$value[2]), tsbl)
+})
+
 test_that("Difftime with 1 day interval", {
   idx_time <- hms(days = 1:5)
   dat_x <- tibble(time = idx_time, value = rnorm(5))
