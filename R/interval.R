@@ -279,7 +279,7 @@ gcd_interval <- function(x) {
   if (length(x) < 2) { # only one time index
     0
   } else {
-    unique_x <- vec_unique(round(abs(diff(x)), digits = 6))
+    unique_x <- vec_unique(round(abs(diff(x)), digits = 12))
     gcd_vector(unique_x)
   }
 }
